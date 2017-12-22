@@ -28,9 +28,9 @@ function erreur() {
   this.emit('end');
 }
 
-gulp.task('clean', function()		{ deletefile("src/*.js") });
+gulp.task('clean', function()		{ deletefile("src/*.js").pipe(deletefile("build/*.*"))});
 
-gulp.task('images', function()		{ gulp.src('src/img/*.*').pipe(gulp.dest('build/img')) });
+gulp.task('icones', function()		{ gulp.src('src/*.ico').pipe(gulp.dest('build')) });
 
 gulp.task('pages', function()		{ gulp.src('src/index.html').pipe(gulp.dest('build')).pipe(gulp.dest('public')) });
 
@@ -81,8 +81,8 @@ gulp.task('browser-sync', function() {
 });
 
 
-gulp.task('default', ['clean', 'pages', 'transform', 'bundle', 'browser-sync'], function() {
+gulp.task('default', ['clean', 'icones', 'pages', 'transform', 'bundle', 'browser-sync'], function() {
 	gulp.watch('./src/*.jsx', ['transform', 'bundle']);
 	gulp.watch('./src/bundle.css', ['transform', 'bundle']);
-//	gulp.watch('./src/img/*.*', ['images']);
+	gulp.watch('./src/*.ico', ['images']);
 });
