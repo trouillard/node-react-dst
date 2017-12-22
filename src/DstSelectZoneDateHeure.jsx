@@ -1,15 +1,13 @@
 
 import React from 'react';
-import moment from 'moment';
-import fetch from 'node-fetch';
 import AutoComplete from 'material-ui/AutoComplete';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
-import backend from './config';
 import areIntlLocalesSupported from 'intl-locales-supported';
 
 
 let DateTimeFormat;
+
 
 if (areIntlLocalesSupported(['fr'])) {
   DateTimeFormat = global.Intl.DateTimeFormat;
@@ -26,64 +24,86 @@ export default class DstSelectZoneDateHeure extends React.Component {
 	    super(props);
 
 	    this.state = {
+			date: null,
 			zones: [ ],
 			affichage: { text: 'nom', value: 'id'}
 	    };
 
-	    this.changeDate = this.changeDate.bind(this);
-	    this.changeSaisieZones = this.changeSaisieZones.bind(this);
-	    this.selectZone = this.selectZone.bind(this);
+	    this.surChangementDate = this.surChangementDate.bind(this);
+	    this.surChangementHoraire = this.surChangementHoraire.bind(this);
+	    this.surChoixZone = this.surChoixZone.bind(this);
+	    this.surChangementSaisieZone = this.surChangementSaisieZone.bind(this);
 	}
 
-	changeDate(date) {
-		this.setState({
-			startDate: date
-		});
+	surChangementDate(bidon, date) {
+		this.props.surChangementDate(date);
 	}
 
-	selectZone(saisie) {
+	surChangementHoraire(bidon, date) {
+		this.props.surChangementHoraire(date);
+	}
+
+	surChoixZone(saisie) {
 		this.props.surChoixZone(saisie.id);
 	}
 
-	changeSaisieZones(saisie) {
-		fetch("http://" + backend.rest.url +  "zones?nom=" + saisie, {method: 'GET'})
-	  	.then((res) => { return res.json() })
-	  	.then((result) => {
-		  		const solutionZones = [];
-		  		result.forEach((r) => { solutionZones.push({ id: r.id.toString(), nom: r.nom });});
-				this.setState({zones: solutionZones});
-	  });
+	surChangementSaisieZone(saisie) {
+		this.props.surChangementSaisieZone(saisie, this);
 	}
+
 
    render() {
 
-	return (
+	var htmlDate = '';
+	var htmlHoraire = '';
 
+	if (this.props.date != null) {
+		htmlDate =		<DatePicker
+						  hintText="Date"
+						  autoOk={true}
+						  value={this.props.date}
+						  onChange={this.surChangementDate}
+						  style={{
+							margin: '0 auto',
+							padding: '10px',
+						  }}
+						/>
+	}
+
+	if (this.props.horaire != null) {
+		htmlHoraire =	<TimePicker
+						  hintText="Horaire"
+						  minutesStep={5}
+						  format="24hr"
+						  autoOk={true}
+						  value={this.props.horaire}
+						  onChange={this.surChangementHoraire}
+						  style={{
+							margin: '0 auto',
+							padding: '10px',
+						  }}
+						/>
+	}
+
+	return (
 
 		<div>
 
 			<AutoComplete
 			  hintText={this.props.texte}
 			  dataSource={this.state.zones}
-			  onUpdateInput={this.changeSaisieZones}
+			  onUpdateInput={this.surChangementSaisieZone}
 			  dataSourceConfig = {this.state.affichage}
-			  onNewRequest={this.selectZone}
+			  onNewRequest={this.surChoixZone}
 			  filter={AutoComplete.caseInsensitiveFilter}
+			  style={{
+				margin: '0 auto',
+				padding: '10px',
+				backgroundColor: '#E0E0E0',
+    		  }}
 			/>
 
-			<DatePicker
-			  hintText="Date"
-			  autoOk={true}
-			  DateTimeFormat={DateTimeFormat}
-			  locale="fr"
-			/>
-
-			<TimePicker
-			  hintText="Horaire"
-			  minutesStep={5}
-			  format="24hr"
-			  autoOk={true}
-    		/>
+			{htmlDate}{htmlHoraire}
 
 		</div>
 

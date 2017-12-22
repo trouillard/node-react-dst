@@ -1,6 +1,6 @@
 
 
-var rest = {
+const rest = {
 		url : "localhost:3002/rest/"
 
 }
