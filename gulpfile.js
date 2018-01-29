@@ -53,7 +53,7 @@ gulp.task('transform', function()	{
 });
 
 gulp.task('bundle', function()		{
-    return	browserify({entries: './src/index.js', debug: true})
+    return	browserify({entries: 'src/index.js', debug: true})
     		.transform("babelify", {
 			  						global: true,
 			  						ignore: /\/node_modules\/(?!app\/)/
@@ -81,7 +81,7 @@ gulp.task('browser-sync', function() {
 });
 
 
-gulp.task('default', ['clean', 'icones', 'pages', 'transform', 'bundle', 'browser-sync'], function() {
+gulp.task('default', ['icones', 'pages', 'transform', 'bundle', 'browser-sync'], function() {
 	gulp.watch('./src/*.jsx', ['transform', 'bundle']);
 	gulp.watch('./src/bundle.css', ['transform', 'bundle']);
 	gulp.watch('./src/*.ico', ['images']);
