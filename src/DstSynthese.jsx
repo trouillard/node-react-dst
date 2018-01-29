@@ -46,23 +46,23 @@ export default class DstSynthese extends React.Component {
 
 		if(this.state.zoneReference != null && this.state.zoneDistante != null) {
 
-
 			if (this.state.dateDistante == null) {
-				var dateDistanteNew = this.state.zoneDistante.dateDistanteZoneEtDateReferenceChoisies(this.state.zoneReference, this.state.dateReference);
+				var dateDistanteNew = new Date(this.state.zoneDistante.dateDistanteZoneEtDateReferenceChoisies(this.state.zoneReference, this.state.dateReference));
+				//console.log("Alors ? : " + dateDistanteNew.toString());
 				this.setState({dateDistante: dateDistanteNew});
 			}
 			else {
 				if(this.state.dateReference == null) {
-					var dateReferenceNew = this.state.zoneReference.dateReferenceZoneEtDateDistanteChoisies(this.state.zoneDistante, this.state.dateDistante);
+					var dateReferenceNew = new Date(this.state.zoneReference.dateReferenceZoneEtDateDistanteChoisies(this.state.zoneDistante, this.state.dateDistante));
 					this.setState({dateReference: dateReferenceNew});
 				}
 				else {
 						if (priorite == "Distant") {
-							var dateReferenceNew = this.state.zoneReference.dateReferenceZoneEtDateDistanteChoisies(this.state.zoneDistante, this.state.dateDistante);
+							var dateReferenceNew = new Date(this.state.zoneReference.dateReferenceZoneEtDateDistanteChoisies(this.state.zoneDistante, this.state.dateDistante));
 							this.setState({dateReference: dateReferenceNew});
 						}
 						else {
-							var dateDistanteNew = this.state.zoneDistante.dateDistanteZoneEtDateReferenceChoisies(this.state.zoneReference, this.state.dateReference);
+							var dateDistanteNew = new Date(this.state.zoneDistante.dateDistanteZoneEtDateReferenceChoisies(this.state.zoneReference, this.state.dateReference));
 							this.setState({dateDistante: dateDistanteNew});
 						}
 				}
@@ -144,7 +144,7 @@ export default class DstSynthese extends React.Component {
 				dstRef = new DST(0, '', '', '', 0, 0, 0, 0, '', '', 0, 0, 0, 0);
 			}
 			else {
-				dstRef = new DST(this.state.dsts[zoneRef.dst-1].id, this.state.dsts[zoneRef.dst-1].nom, this.state.dsts[zoneRef.dst-1].methode_on, this.state.dsts[zoneRef.dst-1].operateur_on, this.state.dsts[zoneRef.dst-1].mois_on, this.state.dsts[zoneRef.dst-1].decile_on, this.state.dsts[zoneRef.dst-1].jour_on, this.state.dsts[zoneRef.dst-1].heures_on, this.state.dsts[zoneRef.dst-1].methode_off, this.state.dsts[zoneRef.dst-1].operateur_off, this.state.dsts[zoneRef.dst-1].mois_off, this.state.dsts[zoneRef.dst-1].decile_off, this.state.dsts[zoneRef.dst-1].jour_off);
+				dstRef = new DST(this.state.dsts[zoneRef.dst-1].id, this.state.dsts[zoneRef.dst-1].nom, this.state.dsts[zoneRef.dst-1].methode_on, this.state.dsts[zoneRef.dst-1].operateur_on, this.state.dsts[zoneRef.dst-1].mois_on, this.state.dsts[zoneRef.dst-1].decile_on, this.state.dsts[zoneRef.dst-1].jour_on, this.state.dsts[zoneRef.dst-1].heures_on, this.state.dsts[zoneRef.dst-1].methode_off, this.state.dsts[zoneRef.dst-1].operateur_off, this.state.dsts[zoneRef.dst-1].mois_off, this.state.dsts[zoneRef.dst-1].decile_off, this.state.dsts[zoneRef.dst-1].jour_off, this.state.dsts[zoneRef.dst-1].heures_off);
 			}
 			zoneRef.dst = dstRef;
 			this.setState({zoneReference: zoneRef});
@@ -193,7 +193,7 @@ export default class DstSynthese extends React.Component {
 				dstDis = new DST(0, '', '', '', 0, 0, 0, 0, '', '', 0, 0, 0, 0);
 			}
 			else {
-				dstDis = new DST(this.state.dsts[zoneDis.dst-1].id, this.state.dsts[zoneDis.dst-1].nom, this.state.dsts[zoneDis.dst-1].methode_on, this.state.dsts[zoneDis.dst-1].operateur_on, this.state.dsts[zoneDis.dst-1].mois_on, this.state.dsts[zoneDis.dst-1].decile_on, this.state.dsts[zoneDis.dst-1].jour_on, this.state.dsts[zoneDis.dst-1].heures_on, this.state.dsts[zoneDis.dst-1].methode_off, this.state.dsts[zoneDis.dst-1].operateur_off, this.state.dsts[zoneDis.dst-1].mois_off, this.state.dsts[zoneDis.dst-1].decile_off, this.state.dsts[zoneDis.dst-1].jour_off);
+				dstDis = new DST(this.state.dsts[zoneDis.dst-1].id, this.state.dsts[zoneDis.dst-1].nom, this.state.dsts[zoneDis.dst-1].methode_on, this.state.dsts[zoneDis.dst-1].operateur_on, this.state.dsts[zoneDis.dst-1].mois_on, this.state.dsts[zoneDis.dst-1].decile_on, this.state.dsts[zoneDis.dst-1].jour_on, this.state.dsts[zoneDis.dst-1].heures_on, this.state.dsts[zoneDis.dst-1].methode_off, this.state.dsts[zoneDis.dst-1].operateur_off, this.state.dsts[zoneDis.dst-1].mois_off, this.state.dsts[zoneDis.dst-1].decile_off, this.state.dsts[zoneDis.dst-1].jour_off, this.state.dsts[zoneDis.dst-1].heures_off);
 			};
 
 			zoneDis.dst = dstDis;
@@ -237,6 +237,11 @@ export default class DstSynthese extends React.Component {
 						surChangementDate={this.surChangementDateDistante}
 						surChangementHoraire={this.surChangementHoraireDistante}
 					/>
+
+					<br></br>
+					<br></br>
+					<br></br>
+					Frank Trouillard - 29/01/2018
 
 					</center>
 

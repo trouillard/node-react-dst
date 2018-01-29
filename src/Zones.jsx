@@ -19,78 +19,83 @@ export default class Zones {
 		// Il y a un DST à prendre en compte
 		if(this.dst.id != 0) {
 
-			var dateOn = this.dst.calculDate_on(date.getFullYear(), this.sens, this.gmt);
-			var dateOff = this.dst.calculDate_off(date.getFullYear(), this.sens, this.gmt);
+			var dateOn = this.dst.calculDate_on(date.getFullYear(), this.sens, this.heures);
+			var dateOff = this.dst.calculDate_off(date.getFullYear(), this.sens, this.heures);
+
+var resultat = new Date(date);
 
 			// On est dans l'hémisphère Nord
-			if( dateOn > dateOff ) {
+			if( dateOff > dateOn ) {
 
 				// On est en période avec DST appliquées, on ajoute 1 heure de DST
-				if (date > dateOn || date < dateOff) {
-					return date.setUTCMilliseconds(date.getUTCMilliseconds() + 3600000);
+				if (date.valueOf() > dateOn && date.valueOf() < dateOff) {
+					return resultat.setUTCMilliseconds(date.getUTCMilliseconds() + 3600000);
 				}
 				// On est hors période de DST, la date ne change pas
 				else {
-					return date;
+					return resultat;
 				}
 			}
 			// on est dans l'hémisphère Sud
+			// dateOff < dateOn
 			else {
 
 				// On est hors période de DST, la date ne change pas
-				if (date > dateOn || date < dateOff) {
-					return date;
+				if (date.valueOf() > dateOn || date.valueOf() < dateOff) {
+					return resultat.setUTCMilliseconds(date.getUTCMilliseconds() + 3600000);
 				}
 				// On est en période avec DST appliquées, on ajoute 1 heure de DST
 				else {
-					return date.setUTCMilliseconds(date.getUTCMilliseconds() + 3600000);
+					return resultat;
 				}
 			}
-			return resultat;
+			//return resultat;
 		}
 		// Pas de DST, la date ne change pas
 		else {
-				return date;
+				return resultat;
 		};
 	}
 
 	dateExcluantDst(date) {
-
 		// Il y a un DST à prendre en compte
 		if(this.dst.id != 0) {
 
-			var dateOn = this.dst.calculDate_on(date.getFullYear(), this.sens, this.gmt);
-			var dateOff = this.dst.calculDate_off(date.getFullYear(), this.sens, this.gmt);
+			var dateOn = this.dst.calculDate_on(date.getFullYear(), this.sens, this.heures);
+			var dateOff = this.dst.calculDate_off(date.getFullYear(), this.sens, this.heures);
+
+var resultat = new Date(date);
 
 			// On est dans l'hémisphère Nord
-			if( dateOn > dateOff ) {
+			if( dateOff > dateOn ) {
 
 				// On est en période avec DST appliquées, on enlève 1 heure de DST
-				if (date > dateOn || date < dateOff) {
-					return date.setUTCMilliseconds(date.getUTCMilliseconds() - 3600000);
+				if (date.valueOf() > dateOn && date.valueOf() < dateOff) {
+					return resultat.setUTCMilliseconds(date.getUTCMilliseconds() - 3600000);
 				}
 				// On est hors période de DST, la date ne change pas
 				else {
-					return date;
+					return resultat;
 				}
 			}
 			// on est dans l'hémisphère Sud
+			// dateOn < dateOff
 			else {
 
 				// On est hors période de DST, la date ne change pas
-				if (date > dateOn || date < dateOff) {
-					return date;
+				if (date.valueOf() > dateOn || date.valueOf() < dateOff) {
+					return resultat.setUTCMilliseconds(date.getUTCMilliseconds() - 3600000);
 				}
 				// On est en période avec DST appliquées, on enlève 1 heure de DST
 				else {
-					return date.setUTCMilliseconds(date.getUTCMilliseconds() - 3600000);
+					return resultat;
 				}
 			}
-			return resultat;
+			//return resultat;
 		}
 		// Pas de DST, la date ne change pas
 		else {
-				return date;
+				return resultat;
 		};
 	}
 
@@ -103,7 +108,11 @@ export default class Zones {
 			(this.sens * this.minutes - zoneReference.sens * zoneReference.minutes) * 60000
 		);
 
-		return this.dateIncluantDst(dateDistante);
+		var dateFinale = new Date(this.dateIncluantDst(dateDistante));
+
+		return dateFinale;
+
+
 	}
 
 	dateReferenceZoneEtDateDistanteChoisies(zoneDistante, dateDistante) {
@@ -115,6 +124,8 @@ export default class Zones {
 			(this.sens * this.minutes - zoneDistante.sens * zoneDistante.minutes) * 60000
 		);
 
-		return this.dateIncluantDst(dateReference);
+		var dateFinale = new Date(this.dateIncluantDst(dateDistante));
+
+		return dateFinale;
 	}
 }

@@ -20,19 +20,19 @@ export default class DST {
 		this.heures_off =	parseInt(heures_off);
 	}
 
-	calculHoraires_on(date, sens, gmt) {
+	calculHoraires_on(date, sens, heures) {
 
-		if(this.methode_on == "Wall")		{ return date.setUTCHours(this.heures_on);	};
-		if(this.methode_on == "Standard")	{ return date.setUTCHours(this.heures_on + sens * gmt); };
-		if(this.methode_on == "UTC")		{ return date.setUTCHours(this.heures_on + 1); };
+		if(this.methode_on == "Wall")		{ return new Date(date.setHours(this.heures_on));	};
+		if(this.methode_on == "UTC")		{ return new Date(date.setHours(this.heures_on + sens * heures));  };
+		if(this.methode_on == "Standard")	{ return new Date(date.setHours(this.heures_on)); };
 
 	}
 
-	calculHoraires_off(date, sens, gmt) {
+	calculHoraires_off(date, sens, heures) {
 
-		if(this.methode_on == "Wall")		{ return date.setUTCHours(this.heures_off);	};
-		if(this.methode_on == "Standard")	{ return date.setUTCHours(this.heures_off + sens * gmt); };
-		if(this.methode_on == "UTC")		{ return date.setUTCHours(this.heures_off); };
+		if(this.methode_off == "Wall")		{ return new Date(date.setHours(this.heures_off));	};
+		if(this.methode_off == "UTC")		{ return new Date(date.setHours(this.heures_off + sens * heures + 1)); };
+		if(this.methode_off == "Standard")	{ return new Date(date.setHours(this.heures_off + 1)); };
 
 	}
 
@@ -40,55 +40,59 @@ export default class DST {
 
 		var date = null;
 
-		if(this.operateur_on == "=") 			{ return new Date(Date.UTC(annee, this.mois_on, this.decile_on)); };
+		if(this.operateur_on == "=") 		{ return new Date(Date.UTC(annee, this.mois_on - 1, this.decile_on)); };
 
-		if(this.operateur_on == ">")			{ date = new Date(Date.UTC(annee, this.mois_on, this.decile_on));
+		if(this.operateur_on == ">")		{ date = new Date(Date.UTC(annee, this.mois_on - 1, this.decile_on + 1));
 											  do {
 												  date.setUTCDate(date.getUTCDate() + 1);
 											  }
-											  while( this.jour_on != date.getDay() + 1  );
+											  while( this.jour_on != date.getDay() );
 											  return date;
 											};
 
-		if(this.operateur_on == "last")		{ date = new Date(Date.UTC(annee, this.mois_on + 1, 1));
+		if(this.operateur_on == "last")		{ date = new Date(Date.UTC(annee, this.mois_on, 1));
 											  do {
 											  		date.setUTCDate(date.getUTCDate() - 1);
 										  	  }
-											  while( this.jour_on != date.getDay() + 1  );
+											  while( this.jour_on != date.getDay() );
 											  return date;
 											};
+
 	}
 
 	calculJour_off(annee) {
 
 		var date = null;
 
-		if(this.operateur_off == "=") 		{ return new Date(Date.UTC(annee, this.mois_off, this.decile_off)); };
+		if(this.operateur_off == "=") 		{ return new Date(Date.UTC(annee, this.mois_off - 1, this.decile_off)); };
 
-		if(this.operateur_off == ">")			{ date = new Date(Date.UTC(annee, this.mois_off, this.decile_off));
+		if(this.operateur_off == ">")			{ date = new Date(Date.UTC(annee, this.mois_off - 1, this.decile_off + 1));
 											  do {
 												  date.setUTCDate(date.getUTCDate() + 1);
 											  }
-											  while( this.jour_off != date.getDay() + 1  );
+											  while( this.jour_off != date.getDay() );
 											  return date;
 											};
 
-		if(this.operateur_off == "last")		{ date = new Date(Date.UTC(annee, this.mois_off + 1, 1));
+		if(this.operateur_off == "last")	{ date = new Date(Date.UTC(annee, this.mois_off, 1));
+											  //console.log("date boucle : " + date.toString());
 											  do {
 											  		date.setUTCDate(date.getUTCDate() - 1);
 										  	  }
-											  while( this.jour_off != date.getDay() + 1  );
+											  while( this.jour_off != date.getDay() );
 											  return date;
 											};
 	}
 
-	calculDate_on(annee, sens, gmt) {
+	calculDate_on(annee, sens, heures) {
 		var jour = this.calculJour_on(annee);
-		return this.calculHoraires_on(jour, sens, gmt);
+		var retour = this.calculHoraires_on(jour, sens, heures);
+		return retour;
 	}
 
-	calculDate_off(annee, sens, gmt) {
+	calculDate_off(annee, sens, heures) {
 		var jour = this.calculJour_off(annee);
-		return this.calculHoraires_off(jour, sens, gmt);
+		var retour = this.calculHoraires_off(jour, sens, heures);
+		return retour;
 	}
 }

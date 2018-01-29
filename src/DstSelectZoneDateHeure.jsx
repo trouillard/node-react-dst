@@ -3,11 +3,16 @@ import React from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
+import RaisedButton from 'material-ui/RaisedButton';
 import areIntlLocalesSupported from 'intl-locales-supported';
 
 
 let DateTimeFormat;
 
+const style = {
+  margin: '0px',
+  padding: '10px',
+};
 
 if (areIntlLocalesSupported(['fr'])) {
   DateTimeFormat = global.Intl.DateTimeFormat;
@@ -64,7 +69,7 @@ export default class DstSelectZoneDateHeure extends React.Component {
 						  value={this.props.date}
 						  onChange={this.surChangementDate}
 						  style={{
-							margin: '0 auto',
+							margin: '0px',
 							padding: '10px',
 						  }}
 						/>
@@ -79,7 +84,7 @@ export default class DstSelectZoneDateHeure extends React.Component {
 						  value={this.props.horaire}
 						  onChange={this.surChangementHoraire}
 						  style={{
-							margin: '0 auto',
+							margin: '0px',
 							padding: '10px',
 						  }}
 						/>
@@ -97,12 +102,11 @@ export default class DstSelectZoneDateHeure extends React.Component {
 			  onNewRequest={this.surChoixZone}
 			  filter={AutoComplete.caseInsensitiveFilter}
 			  style={{
-				margin: '0 auto',
+				margin: '0px',
 				padding: '10px',
 				backgroundColor: '#E0E0E0',
     		  }}
 			/>
-
 			{htmlDate}{htmlHoraire}
 
 		</div>
