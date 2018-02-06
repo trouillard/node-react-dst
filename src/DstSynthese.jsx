@@ -241,7 +241,7 @@ export default class DstSynthese extends React.Component {
 					<br></br>
 					<br></br>
 					<br></br>
-					Frank Trouillard - 29/01/2018
+					Frank Trouillard - 06/02/2018
 
 					</center>
 

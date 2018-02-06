@@ -16,13 +16,13 @@ export default class Zones {
 
 	dateIncluantDst(date) {
 
+		var resultat = new Date(date);
+
 		// Il y a un DST à prendre en compte
 		if(this.dst.id != 0) {
 
 			var dateOn = this.dst.calculDate_on(date.getFullYear(), this.sens, this.heures);
 			var dateOff = this.dst.calculDate_off(date.getFullYear(), this.sens, this.heures);
-
-var resultat = new Date(date);
 
 			// On est dans l'hémisphère Nord
 			if( dateOff > dateOn ) {
@@ -58,13 +58,14 @@ var resultat = new Date(date);
 	}
 
 	dateExcluantDst(date) {
+
+		var resultat = new Date(date);
+
 		// Il y a un DST à prendre en compte
 		if(this.dst.id != 0) {
 
 			var dateOn = this.dst.calculDate_on(date.getFullYear(), this.sens, this.heures);
 			var dateOff = this.dst.calculDate_off(date.getFullYear(), this.sens, this.heures);
-
-var resultat = new Date(date);
 
 			// On est dans l'hémisphère Nord
 			if( dateOff > dateOn ) {
@@ -101,7 +102,9 @@ var resultat = new Date(date);
 
 	dateDistanteZoneEtDateReferenceChoisies(zoneReference, dateReference) {
 
+
 		var dateDistante = new Date(zoneReference.dateExcluantDst(dateReference));
+
 
 		dateDistante.setUTCMilliseconds(dateReference.getUTCMilliseconds() +
 			(this.sens * this.heures - zoneReference.sens * zoneReference.heures) * 3600000 +
